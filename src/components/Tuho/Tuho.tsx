@@ -7,6 +7,7 @@ import { Mobile, PC } from "../../responsive";
 import { StyledRulePopupOpenButton } from "../../styles/Rule/RuleStyle";
 import { Rule } from "../Rule";
 import { useStateContext } from "../../Context";
+import { useNavigate } from "react-router-dom";
 
 interface RankData {
     name: string;
@@ -14,6 +15,7 @@ interface RankData {
 }
 
 export const TuhoList = () => {
+    const navigate = useNavigate();
     const {onPopup, setOnPopup} = useStateContext();
     const [data, setData] = useState<Array<object> | null>(null);
 
@@ -29,7 +31,19 @@ export const TuhoList = () => {
             getTuho();
         }
     }, [data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const preventClose = (e:BeforeUnloadEvent) => {
+        e.preventDefault();
+        navigate("/");
+        console.log("aaa");
+        
+    }
+    useEffect(() => {
+        const handleBeforeUnLoad = (e:BeforeUnloadEvent) => preventClose(e);
+        window.addEventListener("beforeunload", handleBeforeUnLoad)
 
+        return window.removeEventListener("beforeunload", handleBeforeUnLoad);
+    },[preventClose])
     const handleOpenPopup = () => {
         setOnPopup(true);
     }

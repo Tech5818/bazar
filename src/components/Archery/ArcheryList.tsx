@@ -28,6 +28,7 @@ export const ArcheryList = () => {
         if (data === null) {  // 무한 반복 방지
             getArchery();
         }
+        setInterval(getArchery, 1000)
     }, [data])
 
     const handleOpenPopup = () => {
